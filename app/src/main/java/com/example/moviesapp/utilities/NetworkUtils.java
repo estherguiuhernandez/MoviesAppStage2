@@ -31,7 +31,7 @@ public class NetworkUtils {
      * This parameter is deleted and needs for security when uploaded and needs to be added
      */
     final static String PARAM_KEY = "api_key";
-    final static String myApiKey = "e87fada0a47463418dac3356605c33bd";
+    final static String myApiKey = "";
 
     /**
      * Builds the URL used to query moviesdb.

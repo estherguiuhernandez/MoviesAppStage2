@@ -1,16 +1,13 @@
 package com.example.moviesapp;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -20,14 +17,14 @@ import java.util.ArrayList;
 public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerViewAdapter.ViewHolder> {
 
     private static final String TAG = "GridRecyclerViewAdapter";
-    private ArrayList<String> mMovieTitle = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
+    private static ArrayList<Movie> mMovies = new ArrayList<>();
+    private String mMovieTittle = "";
+    private String mMovieUrl = "";
     private Context mContext;
     private OnMoviesListener mOnMoviesListener;
 
-    public GridRecyclerViewAdapter(Context context, OnMoviesListener onMoviesListener, ArrayList<String> moviesTitle, ArrayList<String> imageUrls) {
-        mMovieTitle = moviesTitle;
-        mImageUrls = imageUrls;
+    public GridRecyclerViewAdapter(Context context, OnMoviesListener onMoviesListener, ArrayList<Movie> jsonMovieData) {
+        mMovies = jsonMovieData;
         mContext = context;
         mOnMoviesListener = onMoviesListener;
     }
@@ -46,25 +43,33 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
         Log.d(TAG, "OnViewHolder method called");
         // position reffers to the position in the list
 
+        Movie currentMovie = mMovies.get(position);
+        mMovieTittle = currentMovie.getmTitle();
+        mMovieUrl = currentMovie.getmFullPosterUrl();
+
         RequestOptions requestOptions = new RequestOptions()
                 .placeholder(R.drawable.ic_launcher_background);
 
         Glide.with(mContext)
-                .load(mImageUrls.get(position))
+                .load(mMovieUrl)
                 .apply(requestOptions)
                 .into(viewHolder.movieImage);
 
         // set correct text to the tittle of the movie
-        viewHolder.movieTittle.setText(mMovieTitle.get(position));
+        viewHolder.movieTittle.setText(mMovieTittle);
     }
 
     @Override
     public int getItemCount() {
         // tells the recyclerview adapter class how many items are there going to be
-        return mImageUrls.size();
+        return mMovies.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public interface OnMoviesListener {
+        void onMovieCLick(Movie currentMovie);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView movieImage;
         TextView movieTittle;
         OnMoviesListener onMoviesListener;
@@ -80,12 +85,10 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
 
         @Override
         public void onClick(View v) {
-            onMoviesListener.onMovieCLick(getAdapterPosition());
+            int adapterPosition = getAdapterPosition();
+            Movie currentMovie = mMovies.get(adapterPosition);
+            onMoviesListener.onMovieCLick(currentMovie);
 
         }
-    }
-
-    public interface OnMoviesListener{
-        void onMovieCLick(int position);
     }
 }

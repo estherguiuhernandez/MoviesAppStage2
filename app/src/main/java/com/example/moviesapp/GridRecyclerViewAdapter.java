@@ -48,7 +48,7 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
         mMovieUrl = currentMovie.getmFullPosterUrl();
 
         RequestOptions requestOptions = new RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background);
+                .placeholder(R.drawable.picture_movie_brackground);
 
         Glide.with(mContext)
                 .load(mMovieUrl)

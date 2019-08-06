@@ -116,7 +116,12 @@ public class Movie implements Parcelable {
      * returns the full url of the poster of the movie
      */
     public String getmFullPosterUrl() {
-        return mUrlPath + mImageSize + mPosterUrl;
+
+        if (mUrlPath == "null") {
+            return null;
+        } else {
+            return mUrlPath + mImageSize + mPosterUrl;
+        }
     }
 
     @Override

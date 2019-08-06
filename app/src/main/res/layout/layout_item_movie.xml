@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="center"
-            android:src="@mipmap/ic_launcher_round"
+            android:src="@drawable/picture_movie_brackground"
             app:layout_constraintDimensionRatio="H,16:9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,5 +38,6 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_movie_grid" />
 
     </android.support.constraint.ConstraintLayout>
+
 
 </android.support.v7.widget.CardView>

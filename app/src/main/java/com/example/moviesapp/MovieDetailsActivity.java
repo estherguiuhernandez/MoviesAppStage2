@@ -30,19 +30,20 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         Movie movie = getIntent().getParcelableExtra("movie");
 
-        if (movie != null) {
-            mMovieTitle.setText(movie.getmTitle());
-            mMovieSynopsis.setText(movie.getmSynopsis());
-            mMovieVotes.setText(movie.getmVote());
-            mMovieRelease.setText(movie.getmDate());
+        mMovieTitle.setText(movie.getmTitle());
+        mMovieSynopsis.setText(movie.getmSynopsis());
+        mMovieVotes.setText(movie.getmVote());
+        mMovieRelease.setText(movie.getmDate());
+        String movieUrl = movie.getmFullPosterUrl();
 
-            RequestOptions requestOptions = new RequestOptions()
-                    .placeholder(R.drawable.ic_launcher_background);
-            Glide.with(this)
-                    .load(movie.getmFullPosterUrl())
-                    .apply(requestOptions)
-                    .into(mMovieImage);
-        }
+        RequestOptions requestOptions = new RequestOptions()
+                .placeholder(R.drawable.picture_movie_brackground);
+
+        Glide.with(this)
+                .load(movie.getmFullPosterUrl())
+                .apply(requestOptions)
+                .into(mMovieImage);
+
     }
 
 

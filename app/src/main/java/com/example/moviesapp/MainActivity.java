@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements GridRecyclerViewA
     private TextView mErrorMessageDisplay;
     private ProgressBar mLoadingIndicator;
 
-    private String mSortbyParameter = "popularity.desc";
+    private String mSortbyParameter = "popular";
 
     private ArrayList<String> mImageUrl = new ArrayList<>();
     private ArrayList<String> mMovieTittle = new ArrayList<>();
@@ -140,12 +140,12 @@ public class MainActivity extends AppCompatActivity implements GridRecyclerViewA
         int id = item.getItemId();
 
         if (id == R.id.most_popular) {
-            mSortbyParameter = "popularity.desc";
+            mSortbyParameter = "popular";
             loadMovieData();
             return true;
 
         } else if (id == R.id.highest_rated) {
-            mSortbyParameter = "vote_average.desc";
+            mSortbyParameter = "top_rated";
             loadMovieData();
             return true;
 

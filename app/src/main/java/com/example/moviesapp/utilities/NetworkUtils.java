@@ -14,8 +14,14 @@ import java.util.Scanner;
  */
 public class NetworkUtils {
 
+    // int to specify connection timeout to connect to open url
+    final static int URL_CONNECTION_TIMEOUT_MS = 5000;
+
+    // int to specify read time timeout to read from url once connection is opened
+    final static int READ_TIME_TIMEOUT_MS = 10000;
+
     final static String BASE_URL =
-            "http://api.themoviedb.org/3/discover/movie?";
+            "http://api.themoviedb.org/3/movie/";
 
     //final static String PARAM_QUERY = "q";
 
@@ -23,8 +29,8 @@ public class NetworkUtils {
      * The sort field. Can be updated through configuration by user
      * Default: results are sorted by popularity in descendent order
      */
-    final static String PARAM_SORT = "sort_by";
-    final static String sortBy = "popularity.desc";
+    //final static String PARAM_SORT = "sort_by";
+    final static String sortBy = "popular";
 
     /*
      * The key field.
@@ -41,7 +47,7 @@ public class NetworkUtils {
      */
     public static URL buildUrl(String sortbyParameter) {
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
-                .appendQueryParameter(PARAM_SORT, sortbyParameter)
+                .appendPath(sortbyParameter)
                 .appendQueryParameter(PARAM_KEY, myApiKey)
                 .build();
 
@@ -65,6 +71,12 @@ public class NetworkUtils {
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
+            // importance of setting timeouts: if an attempt to connect to URL failed the app would just sit there forever.
+            // it won´t block UI because is inside an AsyncTask but task will never complete and we will waste resources
+            // set the connection timeout to 5 seconds and the read timeout to 10 seconds
+            urlConnection.setConnectTimeout(URL_CONNECTION_TIMEOUT_MS);
+            urlConnection.setReadTimeout(READ_TIME_TIMEOUT_MS);
+
             InputStream in = urlConnection.getInputStream();
 
             // scanner is in charge of buffering the data

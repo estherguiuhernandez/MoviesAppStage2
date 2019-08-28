@@ -5,5 +5,9 @@
     <string name="error_message">Error loading data</string>
     <string name="highest_rated">Highest rated</string>
     <string name="most_popular">Most popular</string>
+    <string name="movie_test_date">2018-09-28</string>
+    <string name="movie_test_title">The old Man and the Gun</string>
+    <string name="movie_test_votes">6.7</string>
+    <string name="movie_test_synopsis">The true story of Forrest Tucker, from his audacious escape from San quentin at the age of 70 to an unpredecented string of heist that confounded authorities and enchanted the public. Wrapped up in the pursuit are a detective, who becomes captivated with Forrest´s commitment to his craft, and a women, who loves him in spite of his choose profession</string>
 
 </resources>

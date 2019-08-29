@@ -42,12 +42,37 @@ public class NetworkUtils {
     /**
      * Builds the URL used to query moviesdb.
      *
-     * @param sortbyParameter The keyword that will be queried for.
+     * @param sortByParameter parameter to sort by
      * @return The URL to use to query the moviesdb server.
      */
-    public static URL buildUrl(String sortbyParameter) {
+    public static URL buildUrl(String sortByParameter) {
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
-                .appendPath(sortbyParameter)
+                .appendPath(sortByParameter)
+                .appendQueryParameter(PARAM_KEY, myApiKey)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    /**
+     * Builds the URL used to query a reviews or trailer from the movie
+     *
+     * @param searchByParameter either movie of review
+     * @param id id of the movie to be queried
+     *
+     * @return The URL to use to query the moviesdb server.
+     */
+    public static URL buildUrlMovies(String id, String searchByParameter) {
+        Uri builtUri = Uri.parse(BASE_URL).buildUpon()
+                .appendPath(id)
+                .appendPath(searchByParameter)
                 .appendQueryParameter(PARAM_KEY, myApiKey)
                 .build();
 

@@ -27,6 +27,8 @@ public class MoviesJsonUtils {
         final String DBM_VOTE = "vote_average";
         final String DBM_SYNOPSIS = "overview";
         final String DBM_RELEASEDATE = "release_date";
+        final String DBM_ID = "id";
+
 
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(moviesJSON)) {
@@ -54,7 +56,8 @@ public class MoviesJsonUtils {
                 String votes = oneMovie.getString(DBM_VOTE);
                 String synopsis = oneMovie.getString(DBM_SYNOPSIS);
                 String releaseDate = oneMovie.getString(DBM_RELEASEDATE);
-                movies.add(new Movie(title, synopsis, votes, releaseDate, posterUrl));
+                int id = oneMovie.getInt(DBM_ID);
+                movies.add(new Movie(id, title, synopsis, votes, releaseDate, posterUrl));
             }
 
         } catch (JSONException e) {
@@ -67,4 +70,43 @@ public class MoviesJsonUtils {
         return movies;
     }
 
+
+    /**
+     * Returns a String object either containing the review or the trailer address
+     *
+     * @param movieJSON the jason data to be parsed
+     */
+    public static String extractMovieExtraInfo(String movieJSON, String extraParameters) {
+
+        /* JASON parameters to query */
+
+        String extraInfo = "";
+
+        // If the JSON string is empty or null, then return early.
+        if (TextUtils.isEmpty(movieJSON)) {
+            return null;
+        }
+
+        // Try to parse the SAMPLE_JSON_RESPONSE. If there's a problem with the way the JSON
+        // is formatted, a JSONException exception object will be thrown.
+        // Catch the exception so the app doesn't crash, and print the error message to the logs.
+        try {
+
+            JSONObject jsonObj = new JSONObject(movieJSON);
+            // Getting JSON Array node
+            JSONArray trailerMovies = jsonObj.getJSONArray("results");
+            JSONObject trailerMovie = trailerMovies.getJSONObject(0);
+
+            extraInfo = trailerMovie.getString(extraParameters);
+
+
+        } catch (JSONException e) {
+            // If an error is thrown when executing any of the above statements in the "try" block,
+            // catch the exception here, so the app doesn't crash. Print a log message
+            // with the message from the exception.
+            Log.e(TAG, "extractMovies: ", e);
+        }
+        // Return the list of movies
+        return extraInfo;
+    }
 }

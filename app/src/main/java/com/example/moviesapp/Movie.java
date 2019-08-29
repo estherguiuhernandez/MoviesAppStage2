@@ -47,6 +47,12 @@ public class Movie implements Parcelable {
     private String mPosterUrl;
 
     /**
+     * /**
+     * ID of the movie
+     */
+    private int mID;
+
+    /**
      * Create a new movie object
      *
      * @param title     title of the movie
@@ -54,8 +60,10 @@ public class Movie implements Parcelable {
      * @param vote      votes of the movie
      * @param date      date release of the movie
      * @param posterUrl url of poster the movie
+     * @param id integer representing id of the movie
      */
-    public Movie(String title, String synopsis, String vote, String date, String posterUrl) {
+    public Movie(int id, String title, String synopsis, String vote, String date, String posterUrl) {
+        mID = id;
         mTitle = title;
         mSynopsis = synopsis;
         mVote = vote;
@@ -70,6 +78,7 @@ public class Movie implements Parcelable {
      * the object CREATOR
      **/
     private Movie(Parcel in) {
+        mID = in.readInt();
         mTitle = in.readString();
         mSynopsis = in.readString();
         mVote = in.readString();
@@ -124,6 +133,14 @@ public class Movie implements Parcelable {
         }
     }
 
+    /**
+     * Get the title of the movie
+     */
+    public int getmID() {
+        return mID;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -132,6 +149,7 @@ public class Movie implements Parcelable {
     // Storing the Movie data to Parcel object
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mID);
         dest.writeString(mTitle);
         dest.writeString(mSynopsis);
         dest.writeString(mVote);

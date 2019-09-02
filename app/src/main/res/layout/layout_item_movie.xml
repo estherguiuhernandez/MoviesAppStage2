@@ -2,12 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_grid_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="4dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginEnd="4dp"
-    app:cardCornerRadius="4dp"
-    app:cardElevation="2dp">
+    android:layout_height="wrap_content">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,24 +13,11 @@
             android:id="@+id/iv_movie_grid"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:scaleType="center"
             android:src="@drawable/picture_movie_brackground"
-            app:layout_constraintDimensionRatio="H,16:9"
+            app:layout_constraintDimensionRatio="H,9:13"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-
-        <TextView
-            android:id="@+id/tv_movie_tittle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="#000"
-            app:layout_constraintEnd_toEndOf="@+id/iv_movie_grid"
-            app:layout_constraintStart_toStartOf="@+id/iv_movie_grid"
-            app:layout_constraintTop_toBottomOf="@+id/iv_movie_grid" />
 
     </android.support.constraint.ConstraintLayout>
 

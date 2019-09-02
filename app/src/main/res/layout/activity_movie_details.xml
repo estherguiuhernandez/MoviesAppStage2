@@ -8,70 +8,67 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".MovieDetailsActivity">
 
         <ImageView
             android:id="@+id/iv_movie"
-            android:layout_width="0dp"
-            android:layout_height="300dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/picture_movie_brackground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_title_details"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_start_details_activity"
-            android:layout_marginTop="@dimen/margin_top_details_activity"
-            android:layout_marginEnd="@dimen/margin_end_details_activity"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_movie"
-            tools:text="@string/movie_test_title" />
-
-        <TextView
-            android:id="@+id/tv_daterelease"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_start_details_activity"
-            android:layout_marginTop="@dimen/margin_top_details_activity"
-            android:layout_marginEnd="@dimen/margin_end_details_activity"
+            style="@style/MovieImageDetails"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_details"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tv_title_details"
+            style="@style/TittleTextViewDetails"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/movie_test_title" />
+
+        <TextView
+            android:id="@+id/tv_daterelease"
+            style="@style/TextViewYear"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/iv_movie"
+            app:layout_constraintTop_toTopOf="@+id/iv_movie"
             tools:text="@string/movie_test_date" />
 
         <TextView
             android:id="@+id/tv_votes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_end_details_activity"
-            android:textStyle="bold"
+            style="@style/TextViewVotes"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_daterelease"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/tv_daterelease"
+            app:layout_constraintTop_toBottomOf="@+id/tv_duration"
             tools:text="@string/movie_test_votes" />
 
         <TextView
-            android:id="@+id/tv_synopsis"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_start_details_activity"
-            android:layout_marginTop="@dimen/margin_top_details_activity"
-            android:layout_marginEnd="@dimen/margin_end_details_activity"
+            android:id="@+id/tv_duration"
+            style="@style/TextViewDuration"
             android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_daterelease"
             app:layout_constraintTop_toBottomOf="@+id/tv_daterelease"
+            tools:text="120min" />
+
+        <TextView
+            android:id="@+id/tv_synopsis"
+            style="@style/TextViewSynopsis"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_movie"
             tools:text="@string/movie_test_synopsis" />
+
+        <Button
+            android:id="@+id/button"
+            style="@style/ButtonFavorites"
+            android:text="Mark as favorite"
+            app:layout_constraintStart_toStartOf="@+id/tv_votes"
+            app:layout_constraintTop_toBottomOf="@+id/tv_votes" />
 
     </android.support.constraint.ConstraintLayout>
 

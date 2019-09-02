@@ -8,4 +8,72 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Style for the movie poster in detail screen -->
+    <style name="MovieImageDetails">
+        <!-- Customize your theme here. -->
+        <item name="android:layout_width">@dimen/movie_poster_details_width</item>
+        <item name="android:layout_height">@dimen/movie_poster_details_heigh</item>
+        <item name="android:layout_marginTop">@dimen/movie_poster_details_margintop</item>
+        <item name="android:layout_marginStart">@dimen/movie_poster_details_marginstart</item>
+    </style>
+
+    <!-- Style for the textview for tittle of movie in detail screen -->
+    <style name="TittleTextViewDetails">
+        <!-- Customize your theme here. -->
+        <item name="android:layout_width">@dimen/movie_title_details_width</item>
+        <item name="android:layout_height">@dimen/movie_title_details_heigh</item>
+        <item name="android:textSize">@dimen/movie_text_size_header1</item>
+        <item name="android:paddingLeft">@dimen/movie_title_details_paddingLeft</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@color/colorTitle</item>
+    </style>
+
+    <style name="TextViewsMainStyle">
+        <!-- Customize your theme here. -->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/margin_top_details_activity</item>
+    </style>
+
+
+    <!-- TextView duration style -->
+    <style name="TextViewDuration" parent="TextViewsMainStyle">
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">@dimen/movie_text_size_header2</item>
+    </style>
+
+    <!-- TextView duration style -->
+    <style name="TextViewYear" parent="TextViewsMainStyle">
+        <item name="android:layout_marginStart">@dimen/margin_start_tv_details_activity</item>
+        <item name="android:textSize">@dimen/movie_text_size_header1</item>
+    </style>
+
+    <!-- TextView votes style -->
+    <style name="TextViewVotes" parent="TextViewsMainStyle">
+        <!-- Customize your theme here. -->
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/movie_text_size_pragraph</item>
+    </style>
+
+    <!-- TextView synopsis style -->
+    <style name="TextViewSynopsis" parent="TextViewsMainStyle">
+        <!-- Customize your theme here. -->
+        <item name="android:layout_width">0dp</item>
+        <item name="android:textSize">@dimen/movie_text_size_pragraph</item>
+        <item name="android:layout_marginEnd">@dimen/margin_end_details_activity</item>
+        <item name="android:layout_marginStart">@dimen/margin_start_tv_details_activity</item>
+    </style>
+
+    <!-- Button favorites style -->
+    <style name="ButtonFavorites" parent="TextViewsMainStyle">
+        <item name="android:textSize">@dimen/movie_text_size_pragraph</item>
+        <item name="android:layout_marginEnd">@dimen/margin_end_details_activity</item>
+        <item name="android:padding">@dimen/movie_button_text_padding</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:background">@color/colorTitle</item>
+    </style>
+
+
 </resources>

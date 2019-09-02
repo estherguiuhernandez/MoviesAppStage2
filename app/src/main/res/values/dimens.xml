@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="margin_start_details_activity">16dp</dimen>
+    <dimen name="margin_start_tv_details_activity">16dp</dimen>
     <dimen name="margin_top_details_activity">8dp</dimen>
     <dimen name="margin_end_details_activity">16dp</dimen>
+
+    <dimen name="movie_poster_details_width">150dp</dimen>
+    <dimen name="movie_poster_details_heigh">200dp</dimen>
+    <dimen name="movie_poster_details_margintop">8dp</dimen>
+    <dimen name="movie_poster_details_marginstart">16dp</dimen>
+
+    <dimen name="movie_title_details_width">0dp</dimen>
+    <dimen name="movie_title_details_heigh">150dp</dimen>
+    <dimen name="movie_title_details_paddingLeft">16dp</dimen>
+
+
+    <dimen name="movie_button_text_padding">16dp</dimen>
+
+    <dimen name="movie_text_size_main">32sp</dimen>
+    <dimen name="movie_text_size_header1">24dp</dimen>
+    <dimen name="movie_text_size_header2">16dp</dimen>
+    <dimen name="movie_text_size_pragraph">12dp</dimen>
+
+
 </resources>

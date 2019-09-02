@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -18,7 +17,6 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
 
     private static final String TAG = "GridRecyclerViewAdapter";
     private static ArrayList<Movie> mMovies = new ArrayList<>();
-    private String mMovieTittle = "";
     private String mMovieUrl = "";
     private Context mContext;
     private OnMoviesListener mOnMoviesListener;
@@ -44,7 +42,6 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
         // position reffers to the position in the list
 
         Movie currentMovie = mMovies.get(position);
-        mMovieTittle = currentMovie.getmTitle();
         mMovieUrl = currentMovie.getmFullPosterUrl();
 
         RequestOptions requestOptions = new RequestOptions()
@@ -55,8 +52,6 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
                 .apply(requestOptions)
                 .into(viewHolder.movieImage);
 
-        // set correct text to the tittle of the movie
-        viewHolder.movieTittle.setText(mMovieTittle);
     }
 
     @Override
@@ -71,13 +66,11 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView movieImage;
-        TextView movieTittle;
         OnMoviesListener onMoviesListener;
 
         public ViewHolder(View itemView, OnMoviesListener moviesListener) {
             super(itemView);
             movieImage = itemView.findViewById(R.id.iv_movie_grid);
-            movieTittle = itemView.findViewById(R.id.tv_movie_tittle);
             onMoviesListener = moviesListener;
             //attach onclick listener to the entire view holder
             itemView.setOnClickListener(this);

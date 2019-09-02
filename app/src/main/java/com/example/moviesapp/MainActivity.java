@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements GridRecyclerViewAdapter.OnMoviesListener {
     private static final String TAG = "MainActivity";
-    private static final int NUM_GRID_COLUMS = 3;
+    private static final int NUM_GRID_COLUMS = 2;
 
     private RecyclerView mRecyclerView;
     private TextView mErrorMessageDisplay;

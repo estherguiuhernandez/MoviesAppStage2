@@ -47,8 +47,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
         mID = movie.getmID();
         mMovieTitle.setText(movie.getmTitle());
         mMovieSynopsis.setText(movie.getmSynopsis());
-        mMovieVotes.setText(movie.getmVote());
-        mMovieRelease.setText(movie.getmDate());
+        mMovieVotes.setText(movie.getmVote() + getString(R.string.votes_overall));
+        mMovieRelease.setText(movie.getmYear());
         String movieUrl = movie.getmFullPosterUrl();
 
         RequestOptions requestOptions = new RequestOptions()

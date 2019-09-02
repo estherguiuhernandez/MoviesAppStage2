@@ -3,6 +3,7 @@
     <dimen name="margin_start_tv_details_activity">16dp</dimen>
     <dimen name="margin_top_details_activity">8dp</dimen>
     <dimen name="margin_end_details_activity">16dp</dimen>
+    <dimen name="margin_top_details_activity_plus">16dp</dimen>
 
     <dimen name="movie_poster_details_width">150dp</dimen>
     <dimen name="movie_poster_details_heigh">200dp</dimen>

@@ -28,6 +28,7 @@ public class MoviesJsonUtils {
         final String DBM_SYNOPSIS = "overview";
         final String DBM_RELEASEDATE = "release_date";
         final String DBM_ID = "id";
+        final String DBM_DURATION = "duration";
 
 
         // If the JSON string is empty or null, then return early.
@@ -57,7 +58,8 @@ public class MoviesJsonUtils {
                 String synopsis = oneMovie.getString(DBM_SYNOPSIS);
                 String releaseDate = oneMovie.getString(DBM_RELEASEDATE);
                 int id = oneMovie.getInt(DBM_ID);
-                movies.add(new Movie(id, title, synopsis, votes, releaseDate, posterUrl));
+                String duration = "120min";
+                movies.add(new Movie(id, title, synopsis, votes, releaseDate, posterUrl, duration));
             }
 
         } catch (JSONException e) {

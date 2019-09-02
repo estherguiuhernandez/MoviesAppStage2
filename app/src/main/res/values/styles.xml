@@ -64,6 +64,7 @@
         <item name="android:textSize">@dimen/movie_text_size_pragraph</item>
         <item name="android:layout_marginEnd">@dimen/margin_end_details_activity</item>
         <item name="android:layout_marginStart">@dimen/margin_start_tv_details_activity</item>
+        <item name="android:layout_marginTop">@dimen/margin_top_details_activity_plus</item>
     </style>
 
     <!-- Button favorites style -->
@@ -73,6 +74,14 @@
         <item name="android:padding">@dimen/movie_button_text_padding</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:background">@color/colorTitle</item>
+    </style>
+
+    <!-- TextView votes style -->
+    <style name="TextViewTrailers" parent="TextViewsMainStyle">
+        <!-- Customize your theme here. -->
+        <item name="android:textSize">@dimen/movie_text_size_header2</item>
+        <item name="android:layout_marginStart">@dimen/margin_start_tv_details_activity</item>
+        <item name="android:layout_marginTop">@dimen/margin_top_details_activity_plus</item>
     </style>
 
 

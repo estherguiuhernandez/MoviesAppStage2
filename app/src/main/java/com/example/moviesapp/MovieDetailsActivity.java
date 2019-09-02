@@ -1,5 +1,9 @@
 package com.example.moviesapp;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +18,7 @@ import com.example.moviesapp.utilities.NetworkUtils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MovieDetailsActivity extends AppCompatActivity {
 
@@ -27,6 +32,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     final String MOVIE_REVIEWS = "reviews";
     final String DBM_TRAILER_KEY = "key";
     final String DBM_REVIEWS_KEY = "content";
+    final static String YOUTUBE_URL = "http://www.youtube.com/watch?v=";
     private int mID;
 
     @Override
@@ -69,7 +75,18 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     }
 
-    public class MovieDbQueryTask extends AsyncTask<URL, Void, String> {
+    public static void watchYoutubeVideo(Context context, String youtubeId) {
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + youtubeId));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(YOUTUBE_URL + youtubeId));
+        try {
+            context.startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            context.startActivity(webIntent);
+        }
+    }
+
+    public class MovieDbQueryTask extends AsyncTask<URL, Void, ArrayList<String>> {
         String extraSearchParameter = DBM_TRAILER_KEY;
 
         @Override
@@ -78,7 +95,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(URL... params) {
+        protected ArrayList<String> doInBackground(URL... params) {
             if (params.length == 0) {
                 return null;
             }
@@ -86,11 +103,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
             URL searchUrl = params[0];
             String url = searchUrl.toString();
 
-
             if (url.contains("reviews")) {
                 extraSearchParameter = DBM_REVIEWS_KEY;
             }
-            String jsonMovieData;
+            ArrayList<String> jsonMovieData;
 
             try {
                 String moviesSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
@@ -105,9 +121,13 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String jsonMovieData) {
+        protected void onPostExecute(ArrayList<String> jsonMovieData) {
             if (jsonMovieData != null && !jsonMovieData.isEmpty()) {
                 Log.d(TAG, "onPostExecute: " + jsonMovieData);
+                // TODO: think about how to fill up the views
+                //if (extraSearchParameter != DBM_REVIEWS_KEY){
+                //watchYoutubeVideo(MovieDetailsActivity.this, jsonMovieData.get(0));
+                //}
                 //fillupView(jsonMovieData, extraSearchParameter);
             } else {
                 Log.d(TAG, "onPostExecute: ");

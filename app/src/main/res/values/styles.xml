@@ -85,4 +85,32 @@
     </style>
 
 
+    <!-- View splitline style -->
+    <style name="SplitLine">
+        <!-- Customize your theme here. -->
+        <item name="android:layout_width">@dimen/width_match_constraint</item>
+        <item name="android:layout_height">@dimen/split_line_height</item>
+        <item name="android:layout_marginTop">@dimen/margin_split_line</item>
+        <item name="android:layout_marginStart">@dimen/margin_split_line</item>
+        <item name="android:layout_marginEnd">@dimen/margin_split_line</item>
+        <item name="android:background">@color/colorSplitLine</item>
+    </style>
+
+    <!-- TextView trailer style once in detail -->
+    <style name="TextViewTrailer" parent="TextViewsMainStyle">
+        <!-- Customize your theme here. -->
+        <item name="android:textSize">@dimen/movie_text_size_header2</item>
+        <item name="android:layout_marginStart">@dimen/margin_trailer_view</item>
+    </style>
+
+    <!-- View playbutton style -->
+    <style name="PlayButton">
+        <!-- Customize your theme here. -->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/margin_top_trailer_view</item>
+        <item name="android:layout_marginStart">@dimen/margin_trailer_view</item>
+    </style>
+
+
 </resources>

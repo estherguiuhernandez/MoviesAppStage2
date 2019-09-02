@@ -58,6 +58,7 @@ public class MoviesJsonUtils {
                 String synopsis = oneMovie.getString(DBM_SYNOPSIS);
                 String releaseDate = oneMovie.getString(DBM_RELEASEDATE);
                 int id = oneMovie.getInt(DBM_ID);
+                //TODO: eliminate hardcoded string once i know if duration can be retrieved
                 String duration = "120min";
                 movies.add(new Movie(id, title, synopsis, votes, releaseDate, posterUrl, duration));
             }
@@ -78,11 +79,10 @@ public class MoviesJsonUtils {
      *
      * @param movieJSON the jason data to be parsed
      */
-    public static String extractMovieExtraInfo(String movieJSON, String extraParameters) {
+    public static ArrayList<String> extractMovieExtraInfo(String movieJSON, String extraParameters) {
 
         /* JASON parameters to query */
 
-        String extraInfo = "";
 
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(movieJSON)) {
@@ -92,15 +92,18 @@ public class MoviesJsonUtils {
         // Try to parse the SAMPLE_JSON_RESPONSE. If there's a problem with the way the JSON
         // is formatted, a JSONException exception object will be thrown.
         // Catch the exception so the app doesn't crash, and print the error message to the logs.
+        ArrayList<String> extraInfo = new ArrayList<>();
+
         try {
 
             JSONObject jsonObj = new JSONObject(movieJSON);
             // Getting JSON Array node
             JSONArray trailerMovies = jsonObj.getJSONArray("results");
-            JSONObject trailerMovie = trailerMovies.getJSONObject(0);
 
-            extraInfo = trailerMovie.getString(extraParameters);
-
+            for (int i = 0; i < trailerMovies.length(); i++) {
+                JSONObject trailerMovie = trailerMovies.getJSONObject(i);
+                extraInfo.add(trailerMovie.getString(extraParameters));
+            }
 
         } catch (JSONException e) {
             // If an error is thrown when executing any of the above statements in the "try" block,

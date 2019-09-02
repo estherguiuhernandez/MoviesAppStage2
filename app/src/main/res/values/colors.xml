@@ -5,4 +5,5 @@
     <color name="colorAccent">#D81B60</color>
 
     <color name="colorTitle">#008577</color>
+    <color name="colorSplitLine">#c0c0c0</color>
 </resources>

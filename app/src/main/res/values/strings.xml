@@ -12,5 +12,6 @@
     <string name="btn_favorite_text">Mark as \nfavorite</string>
     <string name="votes_overall">/10</string>
     <string name="trailers_textview">Trailers</string>
+    <string name="tv_trailer_text">Trailer 1</string>
 
 </resources>

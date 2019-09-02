@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <dimen name="width_match_constraint">0dp</dimen>
+    <dimen name="split_line_height">2dp</dimen>
+    <dimen name="margin_split_line">8dp</dimen>
+
     <dimen name="margin_start_tv_details_activity">16dp</dimen>
     <dimen name="margin_top_details_activity">8dp</dimen>
     <dimen name="margin_end_details_activity">16dp</dimen>
@@ -21,6 +26,9 @@
     <dimen name="movie_text_size_header1">24dp</dimen>
     <dimen name="movie_text_size_header2">16dp</dimen>
     <dimen name="movie_text_size_pragraph">12dp</dimen>
+
+    <dimen name="margin_trailer_view">24dp</dimen>
+    <dimen name="margin_top_trailer_view">8dp</dimen>
 
 
 </resources>

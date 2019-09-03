@@ -6,8 +6,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -86,6 +91,52 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
     }
 
+    public void addTrailers(int trailerNumber) {
+        int textViewId = trailerNumber;
+        //previousTextViewId = textViewId;
+
+
+        ConstraintLayout layout = findViewById(R.id.cl_movie_details);
+        ConstraintLayout.LayoutParams lp =
+                new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                        ConstraintLayout.LayoutParams.WRAP_CONTENT);
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View trailerLayout = inflater.inflate(R.layout.layout_trailer, layout, false);
+        trailerLayout.setId(textViewId);
+
+        layout.addView(trailerLayout, lp);
+
+        TextView trailer = trailerLayout.findViewById(R.id.tv_trailer_name);
+        trailer.setText("Trailer " + trailerNumber);
+
+        // Move the new view into place by applying constraints.
+        ConstraintSet set = new ConstraintSet();
+        // Get existing constraints. This will be the base for modification.
+        set.clone(layout);
+        int topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                16, getResources().getDisplayMetrics());
+
+        if (trailerNumber != 0) {
+            int previousTextViewID = textViewId - 1;
+            int currentid = trailerLayout.getId();
+            set.connect(trailerLayout.getId(), ConstraintSet.TOP,
+                    previousTextViewID, ConstraintSet.BOTTOM);
+        } else {
+            TextView trailerTitle = layout.findViewById(R.id.tv_trailer);
+            set.connect(trailerLayout.getId(), ConstraintSet.TOP,
+                    trailerTitle.getId(), ConstraintSet.BOTTOM, topMargin);
+        }
+
+        // Since views must be constrained vertically and horizontally, establish the horizontal
+        // consrtaints such that the new view is centered.;
+        //TODO Add horizontal constraints
+        //set.centerHorizontally(middleView.getId(),ConstraintSet.PARENT_ID);
+        // Finally, apply our good work to the layout.
+        set.applyTo(layout);
+
+    }
+
     public class MovieDbQueryTask extends AsyncTask<URL, Void, ArrayList<String>> {
         String extraSearchParameter = DBM_TRAILER_KEY;
 
@@ -125,6 +176,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
             if (jsonMovieData != null && !jsonMovieData.isEmpty()) {
                 Log.d(TAG, "onPostExecute: " + jsonMovieData);
                 // TODO: think about how to fill up the views
+                for (int i = 0; i < 5; i++) {
+                    addTrailers(i);
+                }
                 //if (extraSearchParameter != DBM_REVIEWS_KEY){
                 //watchYoutubeVideo(MovieDetailsActivity.this, jsonMovieData.get(0));
                 //}

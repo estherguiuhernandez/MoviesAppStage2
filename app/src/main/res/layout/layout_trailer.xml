@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_trailer_name"
         style="@style/TextViewTrailer"
         app:layout_constraintBottom_toBottomOf="@+id/iv_play_button"
         app:layout_constraintStart_toEndOf="@+id/iv_play_button"

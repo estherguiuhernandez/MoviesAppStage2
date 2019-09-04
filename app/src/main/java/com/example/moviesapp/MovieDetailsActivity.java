@@ -14,6 +14,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -91,54 +92,65 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Adds the required number of trailers dinamically to the activity_movie_details layout
+     *
+     * @param trailerNumber number of the trailer to be added
+     */
+
     public void addTrailers(int trailerNumber) {
-        int textViewId = trailerNumber;
+        int trailerLayoutID = trailerNumber + 1;
         //previousTextViewId = textViewId;
 
-
-        ConstraintLayout layout = findViewById(R.id.cl_movie_details);
+        ScrollView scrollView = findViewById(R.id.sv_movie_details);
+        ConstraintLayout constraintLayout = scrollView.findViewById(R.id.cl_movie_details);
         ConstraintLayout.LayoutParams lp =
                 new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,
                         ConstraintLayout.LayoutParams.WRAP_CONTENT);
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View trailerLayout = inflater.inflate(R.layout.layout_trailer, layout, false);
-        trailerLayout.setId(textViewId);
+        View trailerLayout = inflater.inflate(R.layout.layout_trailer, constraintLayout, false);
+        trailerLayout.setId(trailerLayoutID);
 
-        layout.addView(trailerLayout, lp);
+        //trailerLayout.setId(tView.generateViewId()
+
+        constraintLayout.addView(trailerLayout, lp);
 
         TextView trailer = trailerLayout.findViewById(R.id.tv_trailer_name);
-        trailer.setText("Trailer " + trailerNumber);
+        trailer.setText("Trailer " + trailerLayoutID);
 
         // Move the new view into place by applying constraints.
         ConstraintSet set = new ConstraintSet();
         // Get existing constraints. This will be the base for modification.
-        set.clone(layout);
+        set.clone(constraintLayout);
         int topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 16, getResources().getDisplayMetrics());
 
         if (trailerNumber != 0) {
-            int previousTextViewID = textViewId - 1;
-            int currentid = trailerLayout.getId();
-            set.connect(trailerLayout.getId(), ConstraintSet.TOP,
+            int previousTextViewID = trailerNumber;
+            set.connect(trailerLayoutID, ConstraintSet.TOP,
                     previousTextViewID, ConstraintSet.BOTTOM);
         } else {
-            TextView trailerTitle = layout.findViewById(R.id.tv_trailer);
-            set.connect(trailerLayout.getId(), ConstraintSet.TOP,
+            TextView trailerTitle = constraintLayout.findViewById(R.id.tv_trailer);
+            set.connect(trailerLayoutID, ConstraintSet.TOP,
                     trailerTitle.getId(), ConstraintSet.BOTTOM, topMargin);
         }
 
         // Since views must be constrained vertically and horizontally, establish the horizontal
-        // consrtaints such that the new view is centered.;
-        //TODO Add horizontal constraints
-        //set.centerHorizontally(middleView.getId(),ConstraintSet.PARENT_ID);
-        // Finally, apply our good work to the layout.
-        set.applyTo(layout);
+        // consrtaints such that the new view is attached to the left of the parent
+        set.connect(trailerLayoutID, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT);
 
+        set.applyTo(constraintLayout);
+
+    }
+
+    public void addreviews(int reviewNumber) {
+        Log.d(TAG, "onPostExecute: Adding reviews " + reviewNumber);
     }
 
     public class MovieDbQueryTask extends AsyncTask<URL, Void, ArrayList<String>> {
         String extraSearchParameter = DBM_TRAILER_KEY;
+        boolean isTrailer = true;
 
         @Override
         protected void onPreExecute() {
@@ -156,6 +168,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
             if (url.contains("reviews")) {
                 extraSearchParameter = DBM_REVIEWS_KEY;
+                isTrailer = false;
+
             }
             ArrayList<String> jsonMovieData;
 
@@ -175,14 +189,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<String> jsonMovieData) {
             if (jsonMovieData != null && !jsonMovieData.isEmpty()) {
                 Log.d(TAG, "onPostExecute: " + jsonMovieData);
-                // TODO: think about how to fill up the views
-                for (int i = 0; i < 5; i++) {
-                    addTrailers(i);
+                if (isTrailer) {
+                    for (int i = 0; i < jsonMovieData.size(); i++) {
+                        addTrailers(i);
+                    }
+                } else {
+                    for (int i = 0; i < jsonMovieData.size(); i++) {
+                        addreviews(i);
+                    }
                 }
-                //if (extraSearchParameter != DBM_REVIEWS_KEY){
-                //watchYoutubeVideo(MovieDetailsActivity.this, jsonMovieData.get(0));
-                //}
-                //fillupView(jsonMovieData, extraSearchParameter);
             } else {
                 Log.d(TAG, "onPostExecute: ");
             }

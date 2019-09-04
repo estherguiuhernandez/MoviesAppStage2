@@ -58,9 +58,7 @@ public class MoviesJsonUtils {
                 String synopsis = oneMovie.getString(DBM_SYNOPSIS);
                 String releaseDate = oneMovie.getString(DBM_RELEASEDATE);
                 int id = oneMovie.getInt(DBM_ID);
-                //TODO: eliminate hardcoded string once i know if duration can be retrieved
-                String duration = "120min";
-                movies.add(new Movie(id, title, synopsis, votes, releaseDate, posterUrl, duration));
+                movies.add(new Movie(id, title, synopsis, votes, releaseDate, posterUrl));
             }
 
         } catch (JSONException e) {

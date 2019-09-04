@@ -13,5 +13,6 @@
     <string name="votes_overall">/10</string>
     <string name="trailers_textview">Trailers</string>
     <string name="tv_trailer_text">Trailer 1</string>
+    <string name="error_playing_trailer">Sorry can´t play trailer, try a different one</string>
 
 </resources>

@@ -43,19 +43,12 @@
         <TextView
             android:id="@+id/tv_votes"
             style="@style/TextViewVotes"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/tv_daterelease"
-            app:layout_constraintTop_toBottomOf="@+id/tv_duration"
-            tools:text="@string/movie_test_votes" />
-
-        <TextView
-            android:id="@+id/tv_duration"
-            style="@style/TextViewDuration"
-            android:textStyle="italic"
-            app:layout_constraintStart_toStartOf="@+id/tv_daterelease"
             app:layout_constraintTop_toBottomOf="@+id/tv_daterelease"
-            tools:text="120min" />
+            tools:text="@string/movie_test_votes" />
 
         <TextView
             android:id="@+id/tv_synopsis"

@@ -52,11 +52,7 @@ public class Movie implements Parcelable {
      */
     private int mID;
 
-    /**
-     * /**
-     * Duration of the movie
-     */
-    private String mDuration;
+
 
     /**
      *
@@ -71,14 +67,13 @@ public class Movie implements Parcelable {
      * @param posterUrl url of poster the movie
      * @param id integer representing id of the movie
      */
-    public Movie(int id, String title, String synopsis, String vote, String date, String posterUrl, String duration) {
+    public Movie(int id, String title, String synopsis, String vote, String date, String posterUrl) {
         mID = id;
         mTitle = title;
         mSynopsis = synopsis;
         mVote = vote;
         mDate = date;
         mPosterUrl = posterUrl;
-        mDuration = duration;
 
     }
 
@@ -94,7 +89,7 @@ public class Movie implements Parcelable {
         mVote = in.readString();
         mDate = in.readString();
         mPosterUrl = in.readString();
-        mDuration = in.readString();
+
     }
 
     /**
@@ -151,12 +146,6 @@ public class Movie implements Parcelable {
         }
     }
 
-    /**
-     * returns the duration of the movie
-     */
-    public String getmDuration() {
-        return mDuration;
-    }
 
     /**
      * Get the title of the movie
@@ -180,6 +169,6 @@ public class Movie implements Parcelable {
         dest.writeString(mVote);
         dest.writeString(mDate);
         dest.writeString(mPosterUrl);
-        dest.writeString(mDuration);
+
     }
 }

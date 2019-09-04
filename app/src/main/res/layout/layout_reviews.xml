@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_reviews"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_review_title"
+        style="@style/TextViewTrailer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Review 1" />
+
+
+    <View
+        android:id="@+id/splitLine_hor_rev"
+        style="@style/SplitLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_review_text" />
+
+    <TextView
+        android:id="@+id/tv_review_text"
+        style="@style/TextViewSynopsis"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_review_title"
+        tools:text="Anyone who’s enjoyed an effects-laden 21st-century superhero movie will know
+        that entire sequences (and indeed characters) are effectively hi-tech animations. Iron Man director
+        Jon Favreau’s 2016 remake of The Jungle Book was billed as part of Disney’s “live action” slate, but beyond
+        the figure of Neel Sethi’s Mowgli, almost nothing in the film was “live”. For The Lion King,
+        which features no human characters, Favreau has simply taken things to their logical conclusion,
+        using cutting-edge technology to create something that looks absolutely real while remaining absolutely unreal. " />
+
+</android.support.constraint.ConstraintLayout>

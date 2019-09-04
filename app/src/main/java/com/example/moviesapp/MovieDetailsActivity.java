@@ -40,6 +40,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     final String DBM_REVIEWS_KEY = "content";
     final static String YOUTUBE_URL = "http://www.youtube.com/watch?v=";
     private int mID;
+    private int mLastLayoutID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +106,65 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
     };
 
-    public void addreviews(int reviewNumber) {
-        Log.d(TAG, "onPostExecute: Adding reviews " + reviewNumber);
+    public int addreviews(int reviewNumber, int previousReviewID, String reviewText) {
+
+        int reviewLayoutNumber = reviewNumber + 1;
+
+        ConstraintLayout constraintLayout = findViewById(R.id.cl_movie_details);
+        ConstraintLayout.LayoutParams lp =
+                new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
+                        ConstraintLayout.LayoutParams.WRAP_CONTENT);
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View reviewsLayout = inflater.inflate(R.layout.layout_reviews, constraintLayout, false);
+
+        reviewsLayout.setId(View.generateViewId());
+        int reviewsLayoutnewID = reviewsLayout.getId();
+
+
+        constraintLayout.addView(reviewsLayout, lp);
+
+        TextView reviewTitleView = reviewsLayout.findViewById(R.id.tv_review_title);
+        reviewTitleView.setText("Review " + reviewLayoutNumber);
+
+        TextView reviewTextView = reviewsLayout.findViewById(R.id.tv_review_text);
+        reviewTextView.setText(reviewText);
+
+
+        // Move the new view into place by applying constraints.
+        ConstraintSet set = new ConstraintSet();
+        // Get existing constraints. This will be the base for modification.
+        set.clone(constraintLayout);
+        int topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                16, getResources().getDisplayMetrics());
+
+        if (reviewNumber != 0) {
+            set.connect(reviewsLayoutnewID, ConstraintSet.TOP,
+                    previousReviewID, ConstraintSet.BOTTOM);
+        } else {
+            if (mLastLayoutID != 0) {
+                set.connect(reviewsLayoutnewID, ConstraintSet.TOP,
+                        mLastLayoutID, ConstraintSet.BOTTOM, topMargin);
+            } else {
+                TextView trailerTitle = constraintLayout.findViewById(R.id.tv_trailer);
+                set.connect(reviewsLayoutnewID, ConstraintSet.TOP,
+                        trailerTitle.getId(), ConstraintSet.BOTTOM, topMargin);
+            }
+
+        }
+
+        // Since views must be constrained vertically and horizontally, establish the horizontal
+        // constraint such that the new view is attached to the left of the parent
+        set.connect(reviewsLayoutnewID, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, 0);
+        // Since views must be constrained vertically and horizontally, establish the horizontal
+        // constraint such that the new view is attached to the left of the parent
+        set.connect(reviewsLayoutnewID, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 0);
+        set.constrainDefaultWidth(reviewsLayoutnewID, ConstraintSet.MATCH_CONSTRAINT_SPREAD);
+
+        set.applyTo(constraintLayout);
+
+        return reviewsLayoutnewID;
+
     }
 
     /**
@@ -117,11 +175,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
      */
 
     public int addTrailers(int trailerNumber, int previousTrailerLayoutId, String trailerYoutubeID) {
-        int trailerLayoutID = trailerNumber + 1;
+        int trailerLayoutNumber = trailerNumber + 1;
 
         ConstraintLayout constraintLayout = findViewById(R.id.cl_movie_details);
         ConstraintLayout.LayoutParams lp =
-                new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
                         ConstraintLayout.LayoutParams.WRAP_CONTENT);
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -135,7 +193,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         constraintLayout.addView(trailerLayout, lp);
 
         TextView trailer = trailerLayout.findViewById(R.id.tv_trailer_name);
-        trailer.setText("Trailer " + trailerLayoutID);
+        trailer.setText("Trailer " + trailerLayoutNumber);
 
         // Move the new view into place by applying constraints.
         ConstraintSet set = new ConstraintSet();
@@ -155,8 +213,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         // Since views must be constrained vertically and horizontally, establish the horizontal
         // consrtaints such that the new view is attached to the left of the parent
-        set.connect(trailerLayoutID, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT);
-
+        set.connect(trailerLayoutnewID, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT);
+        set.constrainDefaultWidth(trailerLayoutnewID, ConstraintSet.MATCH_CONSTRAINT_SPREAD);
         set.applyTo(constraintLayout);
 
         return trailerLayoutnewID;
@@ -202,19 +260,23 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<String> jsonMovieData) {
+            int currentLayoutID = 0;
             if (jsonMovieData != null && !jsonMovieData.isEmpty()) {
                 Log.d(TAG, "onPostExecute: " + jsonMovieData);
                 if (isTrailer) {
                     int previousLayoutID = 0;
                     for (int i = 0; i < jsonMovieData.size(); i++) {
-                        int currentLayoutID = addTrailers(i, previousLayoutID, jsonMovieData.get(i));
+                        currentLayoutID = addTrailers(i, previousLayoutID, jsonMovieData.get(i));
                         previousLayoutID = currentLayoutID;
                     }
                 } else {
                     for (int i = 0; i < jsonMovieData.size(); i++) {
-                        addreviews(i);
+                        int previousLayoutID = 0;
+                        currentLayoutID = addreviews(i, previousLayoutID, jsonMovieData.get(i));
+                        previousLayoutID = currentLayoutID;
                     }
                 }
+                mLastLayoutID = currentLayoutID;
             } else {
                 Log.d(TAG, "onPostExecute: ");
             }

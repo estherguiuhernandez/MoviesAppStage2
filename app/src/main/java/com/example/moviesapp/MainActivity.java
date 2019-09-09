@@ -3,10 +3,6 @@ package com.example.moviesapp;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,13 +10,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.moviesapp.database.MovieFavorites;
 import com.example.moviesapp.utilities.MoviesJsonUtils;
 import com.example.moviesapp.utilities.NetworkUtils;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements GridRecyclerViewAdapter.OnMoviesListener {
     private static final String TAG = "MainActivity";
@@ -32,8 +37,7 @@ public class MainActivity extends AppCompatActivity implements GridRecyclerViewA
 
     private String mSortbyParameter = "popular";
 
-    private ArrayList<String> mImageUrl = new ArrayList<>();
-    private ArrayList<String> mMovieTittle = new ArrayList<>();
+    private FavoritesViewModel favoritesViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +53,13 @@ public class MainActivity extends AppCompatActivity implements GridRecyclerViewA
         /* This TextView is used to display errors and will be hidden if there are no errors */
         mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
         mRecyclerView = findViewById(R.id.rv_movies);
-        loadMovieData();
+
+        if (mSortbyParameter != getString(R.string.favorites)) {
+            loadMovieData();
+        } else {
+            loadMovieDataFromDatabase();
+        }
+
     }
 
     /**
@@ -99,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements GridRecyclerViewA
                 new GridRecyclerViewAdapter(MainActivity.this, this, jsonMovieData);
         // set a GridLayoutManager with NUM_GRID_COLUMS number of columns , horizontal gravity and false
         // value for reverseLayout to show the items from start to end
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), NUM_GRID_COLUMS, LinearLayoutManager.VERTICAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), NUM_GRID_COLUMS, RecyclerView.VERTICAL, false);
         mRecyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerVie
         mRecyclerView.setAdapter(gridReyclerViewAdapter);
     }
@@ -120,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements GridRecyclerViewA
      * our {@link MoviesDbQueryTask}
      */
     private void makeMoviesDbSearchQuery() {
-        //TODO modify URL to be based on user preferences depending on search menu
         URL moviesSearchUrl = NetworkUtils.buildUrl(mSortbyParameter);
         new MoviesDbQueryTask().execute(moviesSearchUrl);
     }
@@ -149,14 +158,27 @@ public class MainActivity extends AppCompatActivity implements GridRecyclerViewA
             loadMovieData();
             return true;
 
+        } else if (id == R.id.favorites) {
+            mSortbyParameter = "favorites";
+            loadMovieDataFromDatabase();
+            return true;
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    private void loadMovieDataFromDatabase() {
+        favoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
+        favoritesViewModel.getAllFavoriteMovies().observe(this, new Observer<List<MovieFavorites>>() {
+            @Override
+            public void onChanged(List<MovieFavorites> movieFavorites) {
+                //update RecyclerView
+                Toast.makeText(MainActivity.this, "onChanged", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public class MoviesDbQueryTask extends AsyncTask<URL, Void, ArrayList<Movie>> {
 
-        // TODO Override onPreExecute to set the loading indicator to visible
         @Override
         protected void onPreExecute() {
             super.onPreExecute();

@@ -28,7 +28,6 @@ public class MoviesJsonUtils {
         final String DBM_SYNOPSIS = "overview";
         final String DBM_RELEASEDATE = "release_date";
         final String DBM_ID = "id";
-        final String DBM_DURATION = "duration";
 
 
         // If the JSON string is empty or null, then return early.

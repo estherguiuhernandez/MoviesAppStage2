@@ -10,9 +10,12 @@
     <string name="movie_test_votes">6.7</string>
     <string name="movie_test_synopsis">The true story of Forrest Tucker, from his audacious escape from San quentin at the age of 70 to an unpredecented string of heist that confounded authorities and enchanted the public. Wrapped up in the pursuit are a detective, who becomes captivated with Forrest´s commitment to his craft, and a women, who loves him in spite of his choose profession</string>
     <string name="btn_favorite_text">Mark as \nfavorite</string>
-    <string name="votes_overall">/10</string>
+    <string name="votes_overall">%1$s /10</string>
     <string name="trailers_textview">Trailers</string>
     <string name="tv_trailer_text">Trailer 1</string>
     <string name="error_playing_trailer">Sorry can´t play trailer, try a different one</string>
+    <string name="trailer_text">Trailer %1$d</string>
+    <string name="review_text">Review %1$d</string>
+    <string name="favorites">Favorites</string>
 
 </resources>

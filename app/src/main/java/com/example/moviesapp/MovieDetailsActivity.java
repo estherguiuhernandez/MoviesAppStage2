@@ -6,9 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -16,6 +13,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -28,18 +29,12 @@ import java.util.ArrayList;
 
 public class MovieDetailsActivity extends AppCompatActivity {
 
-    private TextView mMovieTitle;
-    private TextView mMovieRelease;
-    private TextView mMovieVotes;
-    private TextView mMovieSynopsis;
-    private ImageView mMovieImage;
     private static final String TAG = "MovieDetailsActivity";
     final String MOVIE_TRAILER = "videos";
     final String MOVIE_REVIEWS = "reviews";
     final String DBM_TRAILER_KEY = "key";
     final String DBM_REVIEWS_KEY = "content";
     final static String YOUTUBE_URL = "http://www.youtube.com/watch?v=";
-    private int mID;
     private int mLastLayoutID = 0;
 
     @Override
@@ -49,20 +44,19 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         URL moviesSearchUrl;
 
-        mMovieTitle = findViewById(R.id.tv_title_details);
-        mMovieRelease = findViewById(R.id.tv_daterelease);
-        mMovieVotes = findViewById(R.id.tv_votes);
-        mMovieSynopsis = findViewById(R.id.tv_synopsis);
-        mMovieImage = findViewById(R.id.iv_movie);
+        TextView movieTitle = findViewById(R.id.tv_title_details);
+        TextView movieRelease = findViewById(R.id.tv_daterelease);
+        TextView movieVotes = findViewById(R.id.tv_votes);
+        TextView movieSynopsis = findViewById(R.id.tv_synopsis);
+        ImageView movieImage = findViewById(R.id.iv_movie);
 
         Movie movie = getIntent().getParcelableExtra("movie");
 
-        mID = movie.getmID();
-        mMovieTitle.setText(movie.getmTitle());
-        mMovieSynopsis.setText(movie.getmSynopsis());
-        mMovieVotes.setText(movie.getmVote() + getString(R.string.votes_overall));
-        mMovieRelease.setText(movie.getmYear());
-        String movieUrl = movie.getmFullPosterUrl();
+        int mID = movie.getmID();
+        movieTitle.setText(movie.getmTitle());
+        movieSynopsis.setText(movie.getmSynopsis());
+        movieVotes.setText(getString(R.string.votes_overall, movie.getmVote()));
+        movieRelease.setText(movie.getmYear());
 
         RequestOptions requestOptions = new RequestOptions()
                 .placeholder(R.drawable.picture_movie_brackground);
@@ -70,7 +64,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(movie.getmFullPosterUrl())
                 .apply(requestOptions)
-                .into(mMovieImage);
+                .into(movieImage);
 
         // run assynctask to retrieve the trailer of the movie
         moviesSearchUrl = NetworkUtils.buildUrlMovies(Integer.toString(mID), MOVIE_TRAILER);
@@ -125,7 +119,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         constraintLayout.addView(reviewsLayout, lp);
 
         TextView reviewTitleView = reviewsLayout.findViewById(R.id.tv_review_title);
-        reviewTitleView.setText("Review " + reviewLayoutNumber);
+        reviewTitleView.setText(getString(R.string.review_text, reviewLayoutNumber));
 
         TextView reviewTextView = reviewsLayout.findViewById(R.id.tv_review_text);
         reviewTextView.setText(reviewText);
@@ -193,14 +187,16 @@ public class MovieDetailsActivity extends AppCompatActivity {
         constraintLayout.addView(trailerLayout, lp);
 
         TextView trailer = trailerLayout.findViewById(R.id.tv_trailer_name);
-        trailer.setText("Trailer " + trailerLayoutNumber);
+
+        trailer.setText(getString(R.string.trailer_text, trailerLayoutNumber));
+
+        int topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                16, getResources().getDisplayMetrics());
 
         // Move the new view into place by applying constraints.
         ConstraintSet set = new ConstraintSet();
         // Get existing constraints. This will be the base for modification.
         set.clone(constraintLayout);
-        int topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                16, getResources().getDisplayMetrics());
 
         if (trailerNumber != 0) {
             set.connect(trailerLayoutnewID, ConstraintSet.TOP,
@@ -270,8 +266,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
                         previousLayoutID = currentLayoutID;
                     }
                 } else {
+                    int previousLayoutID = 0;
                     for (int i = 0; i < jsonMovieData.size(); i++) {
-                        int previousLayoutID = 0;
                         currentLayoutID = addreviews(i, previousLayoutID, jsonMovieData.get(i));
                         previousLayoutID = currentLayoutID;
                     }

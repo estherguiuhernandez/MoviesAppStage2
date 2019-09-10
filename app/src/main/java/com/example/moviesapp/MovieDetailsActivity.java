@@ -10,6 +10,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.moviesapp.database.MovieFavorites;
 import com.example.moviesapp.utilities.MoviesJsonUtils;
 import com.example.moviesapp.utilities.NetworkUtils;
 
@@ -27,7 +29,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MovieDetailsActivity extends AppCompatActivity {
+public class MovieDetailsActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private Button mbuttonFavorites;
+
 
     private static final String TAG = "MovieDetailsActivity";
     final String MOVIE_TRAILER = "videos";
@@ -36,11 +41,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
     final String DBM_REVIEWS_KEY = "content";
     final static String YOUTUBE_URL = "http://www.youtube.com/watch?v=";
     private int mLastLayoutID = 0;
+    private Movie movie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
+
+        mbuttonFavorites = findViewById(R.id.bt_add_favorites);
+        mbuttonFavorites.setOnClickListener(this);
 
         URL moviesSearchUrl;
 
@@ -50,7 +59,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         TextView movieSynopsis = findViewById(R.id.tv_synopsis);
         ImageView movieImage = findViewById(R.id.iv_movie);
 
-        Movie movie = getIntent().getParcelableExtra("movie");
+        movie = getIntent().getParcelableExtra("movie");
 
         int mID = movie.getmID();
         movieTitle.setText(movie.getmTitle());
@@ -86,19 +95,19 @@ public class MovieDetailsActivity extends AppCompatActivity {
             context.startActivity(webIntent);
         }
     }
-
-    View.OnClickListener clickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String youtubeID = v.getTag().toString();
-            if (youtubeID != null && !youtubeID.isEmpty()) {
-                watchYoutubeVideo(MovieDetailsActivity.this, youtubeID);
-            } else {
-                Toast.makeText(getApplicationContext(), R.string.error_playing_trailer, Toast.LENGTH_LONG).show();
-            }
-
-        }
-    };
+//
+//    View.OnClickListener clickListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            String youtubeID = v.getTag().toString();
+//            if (youtubeID != null && !youtubeID.isEmpty()) {
+//                watchYoutubeVideo(MovieDetailsActivity.this, youtubeID);
+//            } else {
+//                Toast.makeText(getApplicationContext(), R.string.error_playing_trailer, Toast.LENGTH_LONG).show();
+//            }
+//
+//        }
+//    };
 
     public int addreviews(int reviewNumber, int previousReviewID, String reviewText) {
 
@@ -178,7 +187,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View trailerLayout = inflater.inflate(R.layout.layout_trailer, constraintLayout, false);
-        trailerLayout.setOnClickListener(clickListener);
+        trailerLayout.setOnClickListener(this);
+
 
         trailerLayout.setId(View.generateViewId());
         int trailerLayoutnewID = trailerLayout.getId();
@@ -214,6 +224,38 @@ public class MovieDetailsActivity extends AppCompatActivity {
         set.applyTo(constraintLayout);
 
         return trailerLayoutnewID;
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (v.getId()) {
+            case R.id.bt_add_favorites:
+                addFavoriteToDb();
+                break;
+            default:
+                // default case means is a youtube video, can´t get the id like int he other one, since it was stablished automatically
+                String youtubeID = v.getTag().toString();
+                if (youtubeID != null && !youtubeID.isEmpty()) {
+                    watchYoutubeVideo(MovieDetailsActivity.this, youtubeID);
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.error_playing_trailer, Toast.LENGTH_LONG).show();
+                }
+                break;
+
+        }
+    }
+
+    // this method is called when the favorites button is clicked, and the status is "add to favorites"
+    // it then adds the current movie to favorites
+    private void addFavoriteToDb() {
+        String title = movie.getmTitle();
+        String posterUrl = movie.getmFullPosterUrl();
+        int id = movie.getmID();
+        final MovieFavorites movieFavorites = new MovieFavorites(title, id, posterUrl);
+        //TODO: How to call here insert task???? or remove task???
+        // mDb.taskDao().insertTask(movieFavorites);
 
     }
 
@@ -278,6 +320,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             }
         }
     }
+
 
 }
 

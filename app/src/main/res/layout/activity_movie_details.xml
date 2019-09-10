@@ -59,7 +59,7 @@
             tools:text="@string/movie_test_synopsis" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/bt_add_favorites"
             style="@style/ButtonFavorites"
             android:text="@string/btn_favorite_text"
             app:layout_constraintStart_toStartOf="@+id/tv_votes"

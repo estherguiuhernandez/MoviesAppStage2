@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.moviesapp.database.FavoritesDatabase;
 import com.example.moviesapp.database.MovieFavorites;
 import com.example.moviesapp.utilities.MoviesJsonUtils;
 import com.example.moviesapp.utilities.NetworkUtils;
@@ -30,6 +31,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements GridRecyclerViewAdapter.OnMoviesListener {
     private static final String TAG = "MainActivity";
     private static final int NUM_GRID_COLUMS = 2;
+    public static final String INSTANCE_SORT_BY_PARAMETER = "Sort Parameter";
 
     private RecyclerView mRecyclerView;
     private TextView mErrorMessageDisplay;
@@ -38,6 +40,17 @@ public class MainActivity extends AppCompatActivity implements GridRecyclerViewA
     private String mSortbyParameter = "popular";
 
     private FavoritesViewModel favoritesViewModel;
+
+    // Member variable for the Database
+    private FavoritesDatabase mFavoritesDb;
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedIstanceState) {
+        super.onSaveInstanceState(savedIstanceState);
+        savedIstanceState.putString(INSTANCE_SORT_BY_PARAMETER, mSortbyParameter);
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +66,12 @@ public class MainActivity extends AppCompatActivity implements GridRecyclerViewA
         /* This TextView is used to display errors and will be hidden if there are no errors */
         mErrorMessageDisplay = findViewById(R.id.tv_error_message_display);
         mRecyclerView = findViewById(R.id.rv_movies);
+        mFavoritesDb = FavoritesDatabase.getInstance(getApplicationContext());
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_SORT_BY_PARAMETER)) {
+            mSortbyParameter = savedInstanceState.getString(INSTANCE_SORT_BY_PARAMETER);
+        }
+
 
         if (mSortbyParameter != getString(R.string.favorites)) {
             loadMovieData();
@@ -171,7 +190,21 @@ public class MainActivity extends AppCompatActivity implements GridRecyclerViewA
         favoritesViewModel.getAllFavoriteMovies().observe(this, new Observer<List<MovieFavorites>>() {
             @Override
             public void onChanged(List<MovieFavorites> movieFavorites) {
+                // Create an empty ArrayList that we can start adding news to
+                ArrayList<Movie> movies = new ArrayList<>();
+
+                for (int i = 0; i < movieFavorites.size(); i++) {
+                    MovieFavorites oneMovie = movieFavorites.get(i);
+                    String title = oneMovie.getTitle();
+                    String posterUrl = oneMovie.getPosterUrl();
+                    String votes = "";
+                    String synopsis = "";
+                    String releaseDate = "";
+                    int id = oneMovie.getMovieId();
+                    movies.add(new Movie(id, title, synopsis, votes, releaseDate, posterUrl));
+                }
                 //update RecyclerView
+                initRecyclerView(movies);
                 Toast.makeText(MainActivity.this, "onChanged", Toast.LENGTH_SHORT).show();
             }
         });

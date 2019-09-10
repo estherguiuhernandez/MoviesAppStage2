@@ -13,9 +13,12 @@ public class MovieFavorites {
 
     private int movieId;
 
-    public MovieFavorites(String title, int movieId) {
+    private String posterUrl;
+
+    public MovieFavorites(String title, int movieId, String posterUrl) {
         this.title = title;
         this.movieId = movieId;
+        this.posterUrl = posterUrl;
     }
 
     public int getId() {
@@ -27,10 +30,14 @@ public class MovieFavorites {
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public int getMovieId() {
-        return movieId;
+        return this.movieId;
+    }
+
+    public String getPosterUrl() {
+        return this.posterUrl;
     }
 }

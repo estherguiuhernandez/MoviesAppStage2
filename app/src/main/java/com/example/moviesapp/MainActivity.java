@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -29,10 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements GridRecyclerViewAdapter.OnMoviesListener {
+    public static final String INSTANCE_SORT_BY_PARAMETER = "Sort Parameter";
     private static final String TAG = "MainActivity";
     private static final int NUM_GRID_COLUMS = 2;
-    public static final String INSTANCE_SORT_BY_PARAMETER = "Sort Parameter";
-
     private RecyclerView mRecyclerView;
     private TextView mErrorMessageDisplay;
     private ProgressBar mLoadingIndicator;
@@ -205,7 +203,6 @@ public class MainActivity extends AppCompatActivity implements GridRecyclerViewA
                 }
                 //update RecyclerView
                 initRecyclerView(movies);
-                Toast.makeText(MainActivity.this, "onChanged", Toast.LENGTH_SHORT).show();
             }
         });
     }

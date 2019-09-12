@@ -17,5 +17,7 @@
     <string name="trailer_text">Trailer %1$d</string>
     <string name="review_text">Review %1$d</string>
     <string name="favorites">Favorites</string>
+    <string name="button_favorites_text_remove">Remove from /n favorites</string>
+    <string name="button_favorites_add_text">Add to /n favorites</string>
 
 </resources>

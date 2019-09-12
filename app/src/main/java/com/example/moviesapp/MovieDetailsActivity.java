@@ -21,6 +21,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.moviesapp.database.FavoritesRepository;
 import com.example.moviesapp.database.MovieFavorites;
 import com.example.moviesapp.utilities.MoviesJsonUtils;
 import com.example.moviesapp.utilities.NetworkUtils;
@@ -43,10 +44,15 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     private int mLastLayoutID = 0;
     private Movie movie;
 
+    private FavoritesRepository favoritesRepository;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
+
+        favoritesRepository = new FavoritesRepository(getApplication());
 
         mbuttonFavorites = findViewById(R.id.bt_add_favorites);
         mbuttonFavorites.setOnClickListener(this);
@@ -58,6 +64,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         TextView movieVotes = findViewById(R.id.tv_votes);
         TextView movieSynopsis = findViewById(R.id.tv_synopsis);
         ImageView movieImage = findViewById(R.id.iv_movie);
+        final Button buttonFavorites = findViewById(R.id.bt_add_favorites);
 
         movie = getIntent().getParcelableExtra("movie");
 
@@ -66,6 +73,24 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         movieSynopsis.setText(movie.getmSynopsis());
         movieVotes.setText(getString(R.string.votes_overall, movie.getmVote()));
         movieRelease.setText(movie.getmYear());
+
+        // TODO: HOW TO RETRIEVE the movie from here, i can´t seem to find a solution to retrieve the value from the assynctask!
+
+        OnAsyncTaskCompleted onAsyncTaskImplementation = new OnAsyncTaskCompleted() {
+            @Override
+            public void onTaskCompleted(boolean doesMovieExist) {
+                if (doesMovieExist) {
+                    buttonFavorites.setText(getString(R.string.button_favorites_text_remove));
+                } else {
+                    // maybe this is not needed as is it the default value
+                    buttonFavorites.setText(getString(R.string.button_favorites_add_text));
+                }
+            }
+        };
+
+        favoritesRepository.loadMoviebyId(mID, onAsyncTaskImplementation);
+
+
 
         RequestOptions requestOptions = new RequestOptions()
                 .placeholder(R.drawable.picture_movie_brackground);
@@ -95,19 +120,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             context.startActivity(webIntent);
         }
     }
-//
-//    View.OnClickListener clickListener = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            String youtubeID = v.getTag().toString();
-//            if (youtubeID != null && !youtubeID.isEmpty()) {
-//                watchYoutubeVideo(MovieDetailsActivity.this, youtubeID);
-//            } else {
-//                Toast.makeText(getApplicationContext(), R.string.error_playing_trailer, Toast.LENGTH_LONG).show();
-//            }
-//
-//        }
-//    };
+
 
     public int addreviews(int reviewNumber, int previousReviewID, String reviewText) {
 
@@ -232,7 +245,18 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         int id = v.getId();
         switch (v.getId()) {
             case R.id.bt_add_favorites:
-                addFavoriteToDb();
+                Button bFavorites = (Button) v;
+                String buttonText = bFavorites.getText().toString();
+                String search = "Add";
+                if (buttonText.toLowerCase().indexOf(search.toLowerCase()) != -1) {
+                    // if it contains contain mark means means we need add to database and set text to remove
+                    addFavoriteToDb();
+                    mbuttonFavorites.setText(getString(R.string.button_favorites_text_remove));
+                } else {
+                    removeFavoriteFromDb();
+                    mbuttonFavorites.setText(getString(R.string.button_favorites_add_text));
+                }
+
                 break;
             default:
                 // default case means is a youtube video, can´t get the id like int he other one, since it was stablished automatically
@@ -247,16 +271,28 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    // this method is called when the favorites button is clicked, and the status is "remove to favorites"
+    // it then removes the current movie from favorites
+    private void removeFavoriteFromDb() {
+        int id = movie.getmID();
+        favoritesRepository.delete(id);
+
+    }
+
     // this method is called when the favorites button is clicked, and the status is "add to favorites"
     // it then adds the current movie to favorites
     private void addFavoriteToDb() {
         String title = movie.getmTitle();
-        String posterUrl = movie.getmFullPosterUrl();
+        String posterUrl = movie.getmPosterUrl();
         int id = movie.getmID();
         final MovieFavorites movieFavorites = new MovieFavorites(title, id, posterUrl);
-        //TODO: How to call here insert task???? or remove task???
-        // mDb.taskDao().insertTask(movieFavorites);
+        favoritesRepository.insert(movieFavorites);
 
+    }
+
+
+    public interface OnAsyncTaskCompleted {
+        void onTaskCompleted(boolean doesMovieExist);
     }
 
     public class MovieDbQueryTask extends AsyncTask<URL, Void, ArrayList<String>> {
@@ -319,8 +355,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                 Log.d(TAG, "onPostExecute: ");
             }
         }
-    }
 
+
+    }
 
 }
 

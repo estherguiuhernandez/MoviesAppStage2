@@ -15,12 +15,12 @@ import java.util.Scanner;
 public class NetworkUtils {
 
     // int to specify connection timeout to connect to open url
-    final static int URL_CONNECTION_TIMEOUT_MS = 5000;
+    final private static int URL_CONNECTION_TIMEOUT_MS = 5000;
 
     // int to specify read time timeout to read from url once connection is opened
-    final static int READ_TIME_TIMEOUT_MS = 10000;
+    final private static int READ_TIME_TIMEOUT_MS = 10000;
 
-    final static String BASE_URL =
+    final private static String BASE_URL =
             "http://api.themoviedb.org/3/movie/";
 
     //final static String PARAM_QUERY = "q";
@@ -36,8 +36,8 @@ public class NetworkUtils {
      * The key field.
      * This parameter is deleted and needs for security when uploaded and needs to be added
      */
-    final static String PARAM_KEY = "api_key";
-    final static String myApiKey = "e87fada0a47463418dac3356605c33bd";
+    final private static String PARAM_KEY = "api_key";
+    final private static String myApiKey = "";
 
     /**
      * Builds the URL used to query moviesdb.

@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements GridRecyclerViewA
         }
 
 
-        if (mSortbyParameter != getString(R.string.favorites)) {
+        if (!mSortbyParameter.toLowerCase().contains(getString(R.string.favorites).toLowerCase())) {
             loadMovieData();
         } else {
             loadMovieDataFromDatabase();

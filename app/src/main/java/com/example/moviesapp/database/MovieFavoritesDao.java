@@ -14,13 +14,13 @@ public interface MovieFavoritesDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(MovieFavorites movie);
 
-    @Query("DELETE FROM favorites_table WHERE movieId =:id")
-    void delete(int id);
+    @Query("DELETE FROM favorites_table WHERE movieId =:mid")
+    void delete(int mid);
 
     @Query("SELECT * FROM favorites_table")
     LiveData<List<MovieFavorites>> getAllMovies();
 
-    @Query("SELECT * FROM favorites_table WHERE movieId = :id")
-    LiveData<MovieFavorites> loadMovieById(int id);
+    @Query("SELECT * FROM favorites_table WHERE movieId = :mid")
+    MovieFavorites loadMovieById(int mid);
 
 }

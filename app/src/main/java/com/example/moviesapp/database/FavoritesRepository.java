@@ -81,10 +81,10 @@ public class FavoritesRepository {
 
 
     // we need to perform database operations on background thread, need to do this manually
-    private static class LoadMovieFavoriteByIdAssyncTask extends AsyncTask<Integer, Void, LiveData<MovieFavorites>> {
+    private static class LoadMovieFavoriteByIdAssyncTask extends AsyncTask<Integer, Void, MovieFavorites> {
 
         private MovieFavoritesDao movieFavoritesDao;
-        private LiveData<MovieFavorites> movieFavorites;
+        private MovieFavorites movieFavorites;
         private MovieDetailsActivity.OnAsyncTaskCompleted listener;
         private boolean doesmovieExists = false;
 
@@ -94,13 +94,13 @@ public class FavoritesRepository {
         }
 
         @Override
-        protected LiveData<MovieFavorites> doInBackground(Integer... movieId) {
+        protected MovieFavorites doInBackground(Integer... movieId) {
             this.movieFavorites = movieFavoritesDao.loadMovieById(movieId[0]);
             return movieFavorites;
         }
 
         @Override
-        protected void onPostExecute(LiveData<MovieFavorites> movieFavoritesLiveData) {
+        protected void onPostExecute(MovieFavorites movieFavorites) {
             doesmovieExists = movieFavorites != null;
             listener.onTaskCompleted(doesmovieExists);
         }
